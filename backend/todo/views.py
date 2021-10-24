@@ -1,11 +1,25 @@
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
-# todo/views.py
+from .models import Category, TodoItem
+from .serializers import CategoryModelSerializer, TodoModelSerializer
 
-from django.shortcuts import render
-from rest_framework import viewsets          # add this
-from .serializers import TodoSerializer      # add this
-from .models import Todo                     # add this
-        
-class TodoView(viewsets.ModelViewSet):       # add this
-  serializer_class = TodoSerializer          # add this
-  queryset = Todo.objects.all()              # add this
+
+class TodoViewSet(viewsets.ModelViewSet):
+    """Set of ToDo views with default CRUD"""
+    # ToDo: get list of all undone tasks
+
+    serializer_class = TodoModelSerializer
+    queryset = TodoItem.objects.all()
+    
+    @action(detail=False, methods=['GET'], name='Get Uncompleted')
+    def uncompleted(self, request, *args, **kwargs):
+        queryset = TodoItem.objects.filter(completed=False)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    """Set of Category views with default CRUD"""
+    serializer_class = CategoryModelSerializer
+    queryset = Category.objects.all()
