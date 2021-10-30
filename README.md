@@ -25,7 +25,3 @@ You will need two terminals pointed to the frontend and backend directories to s
 * [React](https://reactjs.org) - A progressive JavaScript framework.
 * [Python](https://www.python.org/) - A programming language that lets you work quickly and integrate systems more effectively.
 * [Django](http://djangoproject.org/) - A high-level Python Web framework that encourages rapid development and clean, pragmatic design.
-
-## Creator Credit
-
-This demo app was originally built for a scotch.io (acquired in 2020 by DigitalOcean) article by [Jordan Irabor](https://github.com/Jordanirabor/django-todo-react)

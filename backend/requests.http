@@ -1,14 +1,15 @@
 @baseUrl = http://localhost
 @basePort = 8000
-
+@version = v1
+@conn = {{baseUrl}}:{{basePort}}/{{version}}
 ### All items
-GET {{baseUrl}}:{{basePort}}/todos/ HTTP/1.1
+GET {{conn}}/todos/ HTTP/1.1
 
 ### Item details
-GET {{baseUrl}}:{{basePort}}/todos/1/ HTTP/1.1
+GET {{conn}}/todos/1/ HTTP/1.1
 
 ### Add new item
-POST {{baseUrl}}:{{basePort}}/todos/ HTTP/1.1
+POST {{conn}}/todos/ HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
@@ -19,7 +20,7 @@ Accept: application/json
 }
 
 ### Change the whole item
-PUT {{baseUrl}}:{{basePort}}/todos/1/ HTTP/1.1
+PUT {{conn}}/todos/1/ HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
@@ -29,7 +30,7 @@ Accept: application/json
     "completed": true
 }
 ### Change item attributes
-PATCH {{baseUrl}}:{{basePort}}/todos/1/ HTTP/1.1
+PATCH {{conn}}/todos/1/ HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
@@ -38,4 +39,4 @@ Accept: application/json
 }
 
 ### Delete item
-DELETE {{baseUrl}}:{{basePort}}/todos/1/ HTTP/1.1
+DELETE {{conn}}/todos/1/ HTTP/1.1
