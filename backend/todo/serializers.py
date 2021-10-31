@@ -1,11 +1,9 @@
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.encoding import smart_text
 from rest_framework import serializers
 
 from .models import Category, TodoItem
 
-
-class SerializerMethodField(serializers.ModelSerializer):
-    def get_category(self, obj):
-        return obj.category.values_list('name', flat=True)
 
 class CategoryModelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,16 +11,30 @@ class CategoryModelSerializer(serializers.ModelSerializer):
         fields = ('id', 'name') 
 
 
-class CategoryField(serializers.Field):
+class CategorySlugRelatedField(serializers.SlugRelatedField):
+    
+    def to_internal_value(self, data):
+        try:
+            categories = self.get_queryset()
+            category, is_created = categories.get_or_create(
+                **{self.slug_field: data}
+                )
+            return category
+        except ObjectDoesNotExist:
+            self.fail('does_not_exist',
+                      slug_name=self.slug_field,
+                      value=smart_text(data)
+            )
+        except (TypeError, ValueError):
+            self.fail('invalid')
 
-    def to_internal_value(self, name):
-        return name
-
-    def to_representation(self, obj):
-        return obj.name
 
 class TodoModelSerializer(serializers.ModelSerializer):
-    category = CategoryField(required=False)
+    category = CategorySlugRelatedField(
+        slug_field='name',
+        required=False,
+        queryset=Category.objects.all()
+    )
 
     class Meta:
         model = TodoItem
@@ -34,11 +46,3 @@ class TodoModelSerializer(serializers.ModelSerializer):
             'due_date',
             'category'
         )
-
-    def create(self, validated_data):
-        category = validated_data.get('category')
-        if category:
-            category, is_created = Category.objects.get_or_create(name=category)
-        validated_data['category'] = category
-        todoItem = TodoItem.objects.create(**validated_data)
-        return todoItem
