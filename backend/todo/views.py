@@ -11,7 +11,7 @@ class TodoViewSet(viewsets.ModelViewSet):
     # ToDo: get list of all undone tasks
 
     serializer_class = TodoModelSerializer
-    queryset = TodoItem.objects.all()
+    queryset = TodoItem.objects.select_related('category')
     
     @action(detail=False, methods=['GET'], name='Get Uncompleted')
     def uncompleted(self, request, *args, **kwargs):

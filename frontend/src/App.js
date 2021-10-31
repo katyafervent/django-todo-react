@@ -100,7 +100,7 @@ class App extends Component {
       return;
     }
     axios
-      .post(`${BASE_URL}/todos/`)
+      .post(`${BASE_URL}/todos/`, item)
       .then(res => this.refreshList());
   };
   handleDelete = item => {

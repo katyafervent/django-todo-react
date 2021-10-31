@@ -2,11 +2,11 @@
 @basePort = 8000
 @version = v1
 @conn = {{baseUrl}}:{{basePort}}/{{version}}
-### All items
+### All ToDo items
 GET {{conn}}/todos/ HTTP/1.1
 
 ### Item details
-GET {{conn}}/todos/1/ HTTP/1.1
+GET {{conn}}/todos/2/ HTTP/1.1
 
 ### Add new item
 POST {{conn}}/todos/ HTTP/1.1
@@ -15,7 +15,9 @@ Accept: application/json
 
 {
     "title": "Hold webinar",
-    "description": "Need prepare presentation and demo for DRF"
+    "description": "Need prepare presentation and demo for DRF",
+    "due_date": "2021-12-12",
+    "category": "Test"
 
 }
 
@@ -40,3 +42,9 @@ Accept: application/json
 
 ### Delete item
 DELETE {{conn}}/todos/1/ HTTP/1.1
+
+### All category items
+GET {{conn}}/categories/ HTTP/1.1
+
+### Item details
+GET {{conn}}/categories/1/ HTTP/1.1
